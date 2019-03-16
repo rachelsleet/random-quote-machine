@@ -5,14 +5,15 @@ class QuoteMachine extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quote: "Blank",
-      author: "Blank"
+      quote: "",
+      author: "",
+      direction: "bounceIn"
     }
     this.getNewQuote = this.getNewQuote.bind(this);
     this.updateQuote = this.updateQuote.bind(this);
   };
   getNewQuote() {
-    fetch("http://quotes.rest/qod.json",{
+    fetch("https://quota.glitch.me/random",{
       crossDomain:true,
       headers: {
         "Content-Type" : "application/x-www-form-urlencoded"
@@ -28,17 +29,26 @@ class QuoteMachine extends React.Component {
   updateQuote(quote) {
     console.log('Quote fetched');
     this.setState({
-      quote: quote.contents.quotes[0].quote,//quote.quote,
-      author: quote.contents.quotes[0].author//quote.author
+      direction: "bounceOut"
+    }, () => {
+    setTimeout(() => {
+      this.setState({
+        direction: "bounceIn",
+        quote: quote.quoteText, //quote.quote,
+        author: quote.quoteAuthor //quote.author
+      });
+    }, 500)
     });
   }
 
   render() {
-    return <div id="quote-box">
-            <p id="text">{this.state.quote}</p>
-            <div id="author">{this.state.author}</div>
-            <div><button id="new-quote" onClick={this.getNewQuote}>Click for Wisdom</button></div>
-            <div><button id="tweet-quote">Tweet</button></div>
+    return <div id="quote-box" >
+            <p id="text" className={'bounce', this.state.direction}>{this.state.quote}</p>
+            <div id="author" className={'bounce', this.state.direction}>{this.state.author}</div>
+            <div className="buttons">
+              <button id="new-quote" onClick={this.getNewQuote}><b>Wisdom Here</b></button>
+              <div><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" id="tweet-quote"><i className="fab fa-twitter-square fa-3x"></i></a></div>
+            </div>
           </div> ;
   }
 }
