@@ -2,23 +2,65 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+      #quote-box {
+        margin:auto;
+        padding-top: 100px;
+        width: 50%;
+      }
+      #text {
+        font-size: 3em;
+        margin:20px;
+      }
+      #author {
+        margin-bottom: 20px;
+      }
+      * {
+        text-align: center;
+      }
+      button {
+        margin: 10px;
+        justify-content: center;
+      }
+    </style>
   </head>
   <body>
     <div id="root">
-      <div id="quote-box">
-        <div id="text">
-          <div id="author">
-
     </div>
     <script type="text/babel">
       class QuoteMachine extends React.Component {
-        
+        constructor(props) {
+          super(props);
+          this.state = {
+            quote: "Blank",
+            author: "Blank"
+          }
+          this.getNewQuote = this.getNewQuote.bind(this);
+        };
+        getNewQuote() {
+          fetch('https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en')
+            .then(results => {return results.json()})
+            .then(data => console.log(data));
+
+          this.setState({
+            quote: "NewQuote",
+            author: "NewAuthor"
+          });
+        }
+        render() {
+          return <div id="quote-box">
+                  <quote id="text">{this.state.quote}</quote>
+                  <div id="author">{this.state.author}</div>
+                  <div><button id="new-quote" onClick={this.getNewQuote}>Click for Wisdom</button></div>
+                  <div><button id="tweet-quote">Tweet</button></div>
+                </div> ;
+        }
       }
       ReactDOM.render(
         <QuoteMachine />,
