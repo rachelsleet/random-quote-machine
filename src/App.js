@@ -5,8 +5,8 @@ class QuoteMachine extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quote: "",
-      author: "",
+      quote: "Wise words",
+      author: "Wise people",
       direction: "bounceIn"
     }
     this.getNewQuote = this.getNewQuote.bind(this);
@@ -23,6 +23,16 @@ class QuoteMachine extends React.Component {
       .then(data => this.updateQuote(data))
 
   }
+
+
+  componentDidMount() {
+        const script = document.createElement("script");
+        script.src = "https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js";
+        script.async = true;
+        script.type = 'text/javascript'
+        document.body.appendChild(script);
+        console.log(script);
+    }
   /*
   *  quote : { quote: string, author: string }
   */
@@ -47,7 +57,7 @@ class QuoteMachine extends React.Component {
             <div id="author" className={'bounce', this.state.direction}>{this.state.author}</div>
             <div className="buttons">
               <button id="new-quote" onClick={this.getNewQuote}><b>Wisdom Here</b></button>
-              <div><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" id="tweet-quote"><i className="fab fa-twitter-square fa-3x"></i></a></div>
+              <div><a href="twitter.com/intent/tweet" id="tweet-quote"><i className="fab fa-twitter-square fa-3x"></i></a></div>
             </div>
           </div> ;
   }
